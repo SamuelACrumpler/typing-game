@@ -16,13 +16,20 @@ class score extends Component {
             word : '',
             input : '',
             scores : [],
-            bank : ''
+            bname : '',
+            bank : ['English', 'Spanish', 'Danish']
 		}
 
 	
     }
 
     componentDidMount() {
+        if(!localStorage.getItem("bankID")){
+            this.setState({bname : "!Invalid Bank!"})
+        }
+        else{
+            this.setState({bname : this.state.bank[localStorage.getItem("bankId")]})
+        }
         localStorage.removeItem("bankID");       
 	}
 
@@ -38,13 +45,13 @@ render() {
         return (
             <div className="container p-2 rounded bg-light">
                 <div className="text-center">
-                    <h3>Top Scores For {this.state.bank}</h3>
+                    <h3>Top Scores For {this.state.bname}</h3>
 				</div>
                 <div className="">
                     <h2>Table Goes Here</h2>
                 </div>
                 <div>
-                    <button class="btn btn-primary w-100">Return</button>
+                    <button class="btn btn-primary w-100" onClick={() => this.onConfirm()}>Return</button>
                 </div>
             </div>
 

@@ -1,6 +1,5 @@
 //selects word bank and displays description also name entry
 import React, { Component } from 'react';
-import usa from '../files/usa.txt';
 
 
 class main extends Component {
@@ -22,18 +21,8 @@ class main extends Component {
 
     componentDidMount() {
         this.doesNameExist();
-        console.log(this.state.bank)
-        console.log(this.state.bank[0])
         this.setState({bname : this.state.bank[0]})
 
-        console.log(usa);
-        let text = '';
-        //Get banks and their description from the database
-        fetch(usa)
-            .then(r => r.text())
-            .then(text => {
-                console.log('text decoded:', text.length);
-            });
         
 	}
 
@@ -71,7 +60,7 @@ class main extends Component {
             return;
         }
 		localStorage.setItem("name", this.state.name);
-        localStorage.setItem("bankID", this.state.bank);
+        localStorage.setItem("bankID", this.state.index);
         this.props.history.push("/game");
 
     }
@@ -83,7 +72,6 @@ render() {
                 <div className="row">
                     <div className="col mb-3">
 				    	<input type="text" placeholder="name" name="name" value={this.state.name} onChange={this.onChange} className="form-control" />
-
                     </div>
 				</div>
                 <div className="row col mb-3">
