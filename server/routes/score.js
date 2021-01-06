@@ -24,6 +24,27 @@ router.get('/count', function (req, res, next) {
 	
 });
 
+//get count of entries in the collection
+router.get('/count/:bid', function (req, res, next) {
+	console.log("Running Count bid");
+
+	score.where(req.params.bid).countDocuments(function (err, count) {
+		if (err) return next(err);
+		res.json(count);
+	});
+
+	
+});
+
+/* Get user by username*/
+router.get('/board/:bid', async function (req, res, next) {
+
+	score.find({ bid : req.params.bid }, function (err, post) {
+		if (err) return next(err);
+		res.json(post);
+	});
+});
+
 
 /* Get score by id*/
 router.get('/:id', function (req, res, next) {

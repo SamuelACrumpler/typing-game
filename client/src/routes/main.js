@@ -1,5 +1,7 @@
 //selects word bank and displays description also name entry
 import React, { Component } from 'react';
+import banks from "../files/banks.json"
+
 
 
 class main extends Component {
@@ -10,6 +12,8 @@ class main extends Component {
             name : '',
             desc : '',
             bank : ['English', 'Spanish', 'Danish'],
+            bankDesc : [banks.engDesc, banks.espDesc, banks.danDesc],
+            bdesc: '',
             bname: '',
             index: 0
         }
@@ -22,12 +26,19 @@ class main extends Component {
     componentDidMount() {
         this.doesNameExist();
         this.setState({bname : this.state.bank[0]})
+        this.setState({bdesc : this.state.bankDesc[this.state.index]})
+        var url = window.location.href
+        console.log(url)
+        var arr = url.split("/");
+        var result = arr[0] + "//" + arr[2]
+        console.log(result)
+        console.log(this.state.index)
 
         
 	}
 
     doesNameExist() {
-		if (localStorage.getItem("name") !== "") { 
+		if (localStorage.getItem("name") !== "" || localStorage.getItem("name") !== null) { 
 			this.setState({name: localStorage.getItem("name")}) 
 		}
 	}
@@ -43,15 +54,25 @@ class main extends Component {
         //Check if index is at zero, if so, set index to length -1
         //IF index is at length -1, set to zero
         //Else add the value to index
+        console.log("thisisval " +  val)
+        console.log("prevind " + this.state.index)
         if(this.state.index === 0 && val < 0){
-            this.setState({index : this.state.bank.length - 1})
+            this.setState({index : this.state.bank.length - 1}, () => {
+                this.setState({bname : this.state.bank[this.state.index]})
+                this.setState({bdesc : this.state.bankDesc[this.state.index]})
+            })
         } else if(this.state.index === this.state.bank.length -1 && val > 0){
-            this.setState({index : 0})
+            this.setState({index : 0}, () => {
+                this.setState({bname : this.state.bank[this.state.index]})
+                this.setState({bdesc : this.state.bankDesc[this.state.index]})
+            })
         } else{
-            this.setState({index : this.state.index + val})
+            console.log("yes " + this.state.index + val)
+            this.setState({index : this.state.index + val}, () => {
+                this.setState({bname : this.state.bank[this.state.index]})
+                this.setState({bdesc : this.state.bankDesc[this.state.index]})
+            })
         }
-        console.log(this.state.index)
-        this.setState({bname : this.state.bank[this.state.index]})
     }
     
     onConfirm() {
@@ -74,10 +95,14 @@ render() {
 				    	<input type="text" placeholder="name" name="name" value={this.state.name} onChange={this.onChange} className="form-control" />
                     </div>
 				</div>
-                <div className="row col mb-3">
+                <div className="row col mb-3 m-0 p-0">
 
                     <div className="col-1 p-0">
-                        <button className="btn btn-lg btn-primary btn-block" onClick={() => this.changeIndex(-1)}>Prv</button>
+                        <button className="btn btn-lg btn-primary btn-block" onClick={() => this.changeIndex(-1)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                        </button>
                     </div>
 
                     <div className="col-10 text-center">
@@ -85,11 +110,15 @@ render() {
                     </div>
 
                     <div className="col-1 p-0">
-                       <button className="btn btn-lg btn-primary btn-block float-right" onClick={() => this.changeIndex(1)}>Nxt</button>
+                       <button className="btn btn-lg btn-primary btn-block float-right" onClick={() => this.changeIndex(1)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
-                <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <div className="text-center">
+                    <p>{this.state.bdesc}</p>
                 </div>
                 <button class="btn btn-primary w-100" onClick={() => this.onConfirm()}> Submit</button>
             </div>

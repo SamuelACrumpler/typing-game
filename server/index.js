@@ -5,11 +5,12 @@ const path = require('path');
 const app = express();
 const cors = require("cors");
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+require('dotenv').config()
 mongoose.Promise = require('bluebird');
 
 
-mongoose.connect('mongodb+srv://scrump:'+process.env.MDBP+'@cluster0.gmugj.mongodb.net/wgucapstone?retryWrites=true&w=majority', {promiseLibrary: require('bluebird') })
+console.log(process.env.MDBP);
+mongoose.connect('mongodb+srv://scrump:'+process.env.MDBP+'@cluster0.gmugj.mongodb.net/typing-game?retryWrites=true&w=majority', {promiseLibrary: require('bluebird') })
 	.then(() => console.log('connection successful'+process.env.NODE_ENV + " PORT" + process.env.PORT))
 	.catch((err) => console.error(err));
 
@@ -22,6 +23,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ 'extended': 'false' }));
 
 app.use("/api/score", score);
+
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname+'/../client/build/index.html'));
+  });
 
 port = process.env.PORT || 5000;
 app.listen(port, '0.0.0.0', function(err) {

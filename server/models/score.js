@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 
 var scoreSchema = new mongoose.Schema({
 	bid: Number,
+	name : String,
     score: Number,
 	words:  Number,
-	createdDate: { type: Date, default: Date.now }
 
 });
 

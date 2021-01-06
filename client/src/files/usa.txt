@@ -975,7 +975,7 @@ aerospace
 aesop
 aesthete
 aesthetic
-aesthetically
+ 
 aesthetics
 afar
 affability

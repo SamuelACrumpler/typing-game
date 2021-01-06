@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import fs, { read } from "fs";
-import readline from "readline";
 import banks from "../files/banks.json"
 
 //the game game
@@ -61,6 +59,9 @@ class game extends Component {
             case "2":
                 this.loadBank(banks.dan.split(" "));
                 break;
+            default:
+                this.props.history.push("/");
+                break;
         }
 
 
@@ -97,7 +98,7 @@ class game extends Component {
         this.setState({seconds : s})
         
         // Check if we're at zero.
-        if (this.state.seconds == 0) { 
+        if (this.state.seconds === 0) { 
           clearInterval(this.timer);
           localStorage.setItem("score", this.state.score);
           localStorage.setItem("words", this.state.wordCount);
