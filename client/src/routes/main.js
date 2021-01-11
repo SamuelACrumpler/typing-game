@@ -28,11 +28,8 @@ class main extends Component {
         this.setState({bname : this.state.bank[0]})
         this.setState({bdesc : this.state.bankDesc[this.state.index]})
         var url = window.location.href
-        console.log(url)
         var arr = url.split("/");
         var result = arr[0] + "//" + arr[2]
-        console.log(result)
-        console.log(this.state.index)
 
         
 	}
@@ -51,24 +48,18 @@ class main extends Component {
     }
 
     changeIndex(val){
-        //Check if index is at zero, if so, set index to length -1
-        //IF index is at length -1, set to zero
-        //Else add the value to index
-        console.log("thisisval " +  val)
-        console.log("prevind " + this.state.index)
-        if(this.state.index === 0 && val < 0){
-            this.setState({index : this.state.bank.length - 1}, () => {
+        if(this.state.index === 0 && val < 0){  //zero and value is being lower. Reset index to highest value
+            this.setState({index : this.state.bank.length - 1}, () => {//Arrow function will wait until the state is set to proceed with the other actions.
                 this.setState({bname : this.state.bank[this.state.index]})
                 this.setState({bdesc : this.state.bankDesc[this.state.index]})
             })
-        } else if(this.state.index === this.state.bank.length -1 && val > 0){
+        } else if(this.state.index === this.state.bank.length -1 && val > 0){ //if index value is at max, reset index to 0
             this.setState({index : 0}, () => {
                 this.setState({bname : this.state.bank[this.state.index]})
                 this.setState({bdesc : this.state.bankDesc[this.state.index]})
             })
         } else{
-            console.log("yes " + this.state.index + val)
-            this.setState({index : this.state.index + val}, () => {
+            this.setState({index : this.state.index + val}, () => { //otherwise add value to the index
                 this.setState({bname : this.state.bank[this.state.index]})
                 this.setState({bdesc : this.state.bankDesc[this.state.index]})
             })

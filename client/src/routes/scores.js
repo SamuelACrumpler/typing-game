@@ -19,7 +19,7 @@ class score extends Component {
 		this.state = {
             word : '',
             input : '',
-            scores : [{name : "butt", score: 12345, words: 24}],
+            scores : [],
             bid : 0,
             bname : '',
             count : 0,
@@ -35,15 +35,13 @@ class score extends Component {
         this.setState({bid : localStorage.getItem("bankID")})
         if(!localStorage.getItem("bankID")){
             this.setState({bname : "!Invalid Bank!"})
-            //force user to return to the home page
-            //this.props.history.push("/");
+            this.props.history.push("/");
 
         }
         else{
             this.setState({bname : this.state.bank[localStorage.getItem("bankID")]})
             this.saveScore()
         }
-        //localStorage.removeItem("bankID");     remove at a later point due to it making other parts of the script fail
     }
     
     saveScore(){
@@ -52,52 +50,75 @@ class score extends Component {
         const score = localStorage.getItem("score");
         const words = localStorage.getItem("words");
         console.log("nametest: "+name);
+        console.log("score " + score);
+        console.log("words " + words);
+        localStorage.removeItem("bankID");
+        localStorage.removeItem("score");
+        localStorage.removeItem("words");
+
+
 
         axios.get(this.state.path + '/api/score/count/' + bid)
             .then(res => {
                 this.setState({ count: res.data})
-                console.log(this.state.count)
             }).finally(() =>
             {
-                if(this.state.count > 30){
-                    this.getScores();
+                if(this.state.count >= 10){
+                console.log("count " + this.state.count)
+                
+                axios.get(this.state.path + '/api/score/board/' + this.state.bid)
+                .then(res => {
+                    this.setState({scores : res.data})
+                }).finally(() => {
+                    
                     let s = this.state.scores;
+                    console.log("b")
                     console.log(s);
+
                     s.sort(function (a,b){
                         return a.value - b.value;
                     });
+                    console.log("1")
+
+                    console.log(s);
+
 
                     let breakcheck = false;
 
                     for(var i = 0; i <= 30; i++ ){
-                        console.log(i)
+                        console.log("tick "+i)
                         console.log(s)
+                        console.log("scorecheck cur/iscore")
+                        console.log(score);
+                        console.log(s[i].score)
                         if (breakcheck === true){return;}
+                        console.log("breakcheck check:  " + breakcheck)
 
-                        if(localStorage.getItem("bankID") > s[i].score){ //if player makes the high score.
+                        
+                        if(score > s[i].score){ //if player makes the high score.
+                            axios.put(this.state.path + '/api/score/' + s[i]._id, {bid, name, score, words})
                             breakcheck = true;
-                            axios.put(this.state.path + '/api/score/' + s[s.length - 1]._id)
-                                .then(()=>{
-                                    let ns = {}
-                                    ns.bid = bid;
-                                    ns.score = score;
-                                    ns.words = words;
-                                    s.splice(s.length-1,1)//remove last value in high score board
-                                    s.push(ns) //add the value to the index
-                                    s.sort(function (a,b){ //resort
-                                        return a.value - b.value;
-                                    });
-                                    this.setState({scores : s})
-                                    axios.get(this.state.path + '/', {bid, name, score, words}) //add new score to database.
-                                })
+                            let ns = {}
+                            ns.bid = bid;
+                            ns.name = name ;
+                            ns.score = score;
+                            ns.words = words;
+                            s.splice(s.length-1,1)//remove last value in high score board
+                            s.push(ns) //add the value to the index
+                            s.sort(function (a,b){ //resort
+                                return b.score - a.score;
+                            });
+                            this.setState({scores : s})
+                            
 
+                            
                         }
                     }
 
-                    //get all scores with the current bankID
-                    //Sort
-                    //Get ID of value to replace
-                    //Update @ ID
+                })
+                    
+                    
+
                 } else {
                     //Simply add value
                     axios.post(this.state.path + '/api/score/', {bid, name, score, words})
@@ -108,17 +129,9 @@ class score extends Component {
 
                 }
             })
-        /*
-            Get All Scores
-            If score count is greater than 30 (or whatever number), instead update the value where it fits
-                Find a way to sort by score, then if possible store by updating where the ID should be swapped
-            if not add score with name to the database.
-        */
-
     }
 
     getScores(){
-        //Pulls down all scores for the bank id.
         axios.get(this.state.path + '/api/score/board/' + this.state.bid)
             .then(res => {
                 this.setState({scores : res.data})

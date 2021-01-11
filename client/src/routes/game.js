@@ -45,12 +45,9 @@ class game extends Component {
         let str = "";
         this.setState({title :  this.state.bankTitles[localStorage.getItem("bankID")]});
 
-        console.log("bid " + localStorage.getItem("bankID"));
-        console.log(this.state.bankTitles[0]);
         switch(localStorage.getItem("bankID")){
             case "0":
                 str = banks.eng.split(" ");
-                console.log(str)
                 this.loadBank(str);
                 break;
             case "1":
@@ -66,8 +63,6 @@ class game extends Component {
 
 
 
-        console.log(banks.eng.split(" "));
-        console.log(str)
        
       
 
@@ -75,7 +70,6 @@ class game extends Component {
     }
 
     loadBank(val){
-        console.log("yes yes")
         this.setState({wordBank : val}, () => 
            { 
             this.timer = setInterval(this.countDown, 1000)
@@ -87,17 +81,14 @@ class game extends Component {
     
     getRandomWord(){
        let rand = Math.floor(Math.random() * this.state.wordBank.length)
-       console.log("rand num " + rand)
        this.setState({curWord : this.state.wordBank[rand]})
 
     }
 
     countDown() {
-        // Remove one second, set state so a re-render happens.
         let s = this.state.seconds - 1;
         this.setState({seconds : s})
         
-        // Check if we're at zero.
         if (this.state.seconds === 0) { 
           clearInterval(this.timer);
           localStorage.setItem("score", this.state.score);
@@ -114,7 +105,6 @@ class game extends Component {
 		state[event.target.name] = event.target.value;
         this.setState(state);
 
-        console.log(event.target.name)
 
         if(this.state.input === this.state.curWord){
             this.setState({score : this.state.score + this.state.curWord.length});
@@ -124,7 +114,6 @@ class game extends Component {
 
         }
         
-        //compare check if length are the same.
     }
 
 render() {
