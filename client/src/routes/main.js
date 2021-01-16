@@ -80,7 +80,7 @@ class main extends Component {
 
 render() {
         return (
-            <div className="container p-2 rounded bg-light">
+            <div className="container p-2 rounded shadow bg-light">
                 <div className="row">
                     <div className="col mb-3">
 				    	<input type="text" placeholder="name" name="name" value={this.state.name} onChange={this.onChange} className="form-control" />

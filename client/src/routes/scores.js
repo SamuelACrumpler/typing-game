@@ -64,7 +64,6 @@ class score extends Component {
             }).finally(() =>
             {
                 if(this.state.count >= 10){
-                console.log("count " + this.state.count)
                 
                 axios.get(this.state.path + '/api/score/board/' + this.state.bid)
                 .then(res => {
@@ -72,27 +71,18 @@ class score extends Component {
                 }).finally(() => {
                     
                     let s = this.state.scores;
-                    console.log("b")
-                    console.log(s);
+                   
 
                     s.sort(function (a,b){
                         return a.value - b.value;
                     });
-                    console.log("1")
-
-                    console.log(s);
-
+                 
 
                     let breakcheck = false;
 
                     for(var i = 0; i <= 30; i++ ){
-                        console.log("tick "+i)
-                        console.log(s)
-                        console.log("scorecheck cur/iscore")
-                        console.log(score);
-                        console.log(s[i].score)
+                        
                         if (breakcheck === true){return;}
-                        console.log("breakcheck check:  " + breakcheck)
 
                         
                         if(score > s[i].score){ //if player makes the high score.
@@ -148,7 +138,7 @@ class score extends Component {
 
 render() {
         return (
-            <div className="container p-2 rounded bg-light">
+            <div className="container p-2 rounded shadow bg-light">
                 <div className="text-center">
                     <h3>Top Scores For {this.state.bname}</h3>
 				</div>

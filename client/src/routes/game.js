@@ -118,7 +118,7 @@ class game extends Component {
 
 render() {
         return (
-            <div className="container p-2 rounded bg-light">
+            <div className="container p-2 rounded shadow bg-light">
                 <div className="row">
                     <div className="col-4">
                         <h3>Score: {this.state.score} Word Count: {this.state.wordCount}</h3>
