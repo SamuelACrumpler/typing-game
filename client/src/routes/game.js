@@ -1,20 +1,6 @@
 import React, { Component } from 'react';
 import banks from "../files/banks.json"
 
-//the game game
-/*
-Needs parser
-Needs to display word
-needs timer
-needs score
-Score is equal to length of word.
-Ideally the game should mark which parts of the words/sentence are wrong.
-
-*/
-
-
-//selects word bank and displays description also name entry
-
 
 class game extends Component {
     constructor(props) {
@@ -60,13 +46,6 @@ class game extends Component {
                 this.props.history.push("/");
                 break;
         }
-
-
-
-       
-      
-
-
     }
 
     loadBank(val){
@@ -106,7 +85,7 @@ class game extends Component {
         this.setState(state);
 
 
-        if(this.state.input === this.state.curWord){
+        if(this.state.input.toUpperCase() === this.state.curWord.toUpperCase() ){
             this.setState({score : this.state.score + this.state.curWord.length});
             this.setState({wordCount : this.state.wordCount+1})
             this.getRandomWord();

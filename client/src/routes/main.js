@@ -10,7 +10,7 @@ class main extends Component {
 
 		this.state = {
             name : '',
-            desc : '',
+            desc : banks.desc,
             bank : ['English', 'Spanish', 'Danish'],
             bankDesc : [banks.engDesc, banks.espDesc, banks.danDesc],
             bdesc: '',
@@ -27,9 +27,7 @@ class main extends Component {
         this.doesNameExist();
         this.setState({bname : this.state.bank[0]})
         this.setState({bdesc : this.state.bankDesc[this.state.index]})
-        var url = window.location.href
-        var arr = url.split("/");
-        var result = arr[0] + "//" + arr[2]
+       
 
         
 	}
@@ -110,6 +108,8 @@ render() {
                 </div>
                 <div className="text-center">
                     <p>{this.state.bdesc}</p>
+                    <hr />
+                    <p>{this.state.desc}</p>
                 </div>
                 <button class="btn btn-primary w-100" onClick={() => this.onConfirm()}> Submit</button>
             </div>
